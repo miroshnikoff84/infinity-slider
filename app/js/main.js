@@ -1,14 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-  const BTNS = document.querySelector('.slider__button');
   const BTN_LEFT = document.querySelector("#btn-left");
   const BTN_RIGHT = document.querySelector("#btn-right");
   const CAROUSEL = document.querySelector("#carousel");
   const ITEM_LEFT = document.querySelector("#item-left");
   const ITEM_RIGHT = document.querySelector("#item-right");
 
-  var evenNumbers = [];
-  var oddNumbers = [];
+  let evenNumbers = [];
+  let oddNumbers = [];
+
   const createCardTemplate = () => {
     const card = document.createElement("div");
     card.classList.add("slider__item-wrap");
@@ -22,9 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(({ value }) => value)
     }
   }
-
-
-  
 
   const moveLeft = () => {
     CAROUSEL.classList.add("transition-left");
@@ -40,13 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   BTN_LEFT.addEventListener("click", moveLeft);
   BTN_RIGHT.addEventListener("click", moveRight);
-
-  CAROUSEL.addEventListener("animationstart", (animationEvent) => {
-    
-    
-  
-
-  });
 
   CAROUSEL.addEventListener("animationend", (animationEvent) => {
     let changedItem;
@@ -76,8 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector("#item-active").innerHTML = ITEM_RIGHT.innerHTML;
     }
 
-    
-
     changedItem.innerHTML = "";
     for (let i = 0; i < 3; i++) {
       const card = createCardTemplate();
@@ -106,15 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       changedItem.appendChild(card);
     }
 
-
-
-
-
-
-
     BTN_LEFT.addEventListener("click", moveLeft);
     BTN_RIGHT.addEventListener("click", moveRight);
   })
-
-
 });
