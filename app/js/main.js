@@ -1,81 +1,89 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
-    const BTNS = document.querySelector('.slider__button');
-    const BTN_LEFT = document.querySelector("#btn-left");
-    const BTN_RIGHT = document.querySelector("#btn-right");
-    const CAROUSEL = document.querySelector("#carousel");
-    const ITEM_LEFT = document.querySelector("#item-left");
-    const ITEM_RIGHT = document.querySelector("#item-right");
 
-    // const ARRAY_IMAGES = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
-    let evenNumbers = [];
-    let oddNumbers = [];
-    
+  const BTNS = document.querySelector('.slider__button');
+  const BTN_LEFT = document.querySelector("#btn-left");
+  const BTN_RIGHT = document.querySelector("#btn-right");
+  const CAROUSEL = document.querySelector("#carousel");
+  const ITEM_LEFT = document.querySelector("#item-left");
+  const ITEM_RIGHT = document.querySelector("#item-right");
+
+  var evenNumbers = [];
+  var oddNumbers = [];
+  const createCardTemplate = () => {
+    const card = document.createElement("div");
+    card.classList.add("slider__item-wrap");
+    return card;
+  }
+  let array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+  const shuffle = (arr) => {
+    return () => {
+      return arr.map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value)
+    }
+  }
+
 
   
-    const createCardTemplate = () => {
-      const card = document.createElement("div");
-      card.classList.add("slider__item-wrap");
-      // card.setAttribute('src', `images/image-${n}.jpg`);
-      return card;
-    }
+
+  const moveLeft = () => {
+    CAROUSEL.classList.add("transition-left");
+    BTN_LEFT.removeEventListener("click", moveLeft);
+    BTN_RIGHT.removeEventListener("click", moveRight);
+  };
+
+  const moveRight = () => {
+    CAROUSEL.classList.add("transition-right");
+    BTN_LEFT.removeEventListener("click", moveLeft);
+    BTN_RIGHT.removeEventListener("click", moveRight);
+  };
+
+  BTN_LEFT.addEventListener("click", moveLeft);
+  BTN_RIGHT.addEventListener("click", moveRight);
+
+  CAROUSEL.addEventListener("animationstart", (animationEvent) => {
     
-    const moveLeft = () => {
-      CAROUSEL.classList.add("transition-left");
-      BTN_LEFT.removeEventListener("click", moveLeft);
-      BTN_RIGHT.removeEventListener("click", moveRight);
-    };
     
-    const moveRight = () => {
-      CAROUSEL.classList.add("transition-right");
-      BTN_LEFT.removeEventListener("click", moveLeft);
-      BTN_RIGHT.removeEventListener("click", moveRight);
-    };
-    
-    BTN_LEFT.addEventListener("click", moveLeft);
-    BTN_RIGHT.addEventListener("click", moveRight);
-    
-    CAROUSEL.addEventListener("animationend", (animationEvent) => {
-      let changedItem;
-      if (animationEvent.animationName === "move-left") {
-        CAROUSEL.classList.remove("transition-left");
-        changedItem = ITEM_LEFT;
-        document.querySelector("#item-active").innerHTML = ITEM_LEFT.innerHTML;
-      } else {
-        CAROUSEL.classList.remove("transition-right");
-        changedItem = ITEM_RIGHT;
-        document.querySelector("#item-active").innerHTML = ITEM_RIGHT.innerHTML;
+  
+
+  });
+
+  CAROUSEL.addEventListener("animationend", (animationEvent) => {
+    let changedItem;
+    evenNumbers = [];
+    oddNumbers = [];
+    const shuffled = shuffle(array);
+    const ar = shuffled();
+
+    for (var i = 0; i < ar.length; i++) {
+      if (i % 2 === 0) { 
+
+        evenNumbers.push(ar[i]);
+      } 
+      if (i % 2 === 1){ 
+        oddNumbers.push(ar[i]);
       }
+    }
 
-    //   for (var i = 0; i < ARRAY_IMAGES.length; i++) {
-    //     if(!(i % 2 === 0)) { // index is even
-            
-    //         evenNumbers.push(ARRAY_IMAGES[i]);
-    //     }
-    //     if((i % 2 === 0)) { // index is even
-            
-    //         oddNumbers.push(ARRAY_IMAGES[i]);
-    //     }
-    // }
+    if (animationEvent.animationName === "move-left") {
+      CAROUSEL.classList.remove("transition-left");
+      changedItem = ITEM_LEFT;
+      document.querySelector("#item-active").innerHTML = ITEM_LEFT.innerHTML;
+
+    } else {
+      CAROUSEL.classList.remove("transition-right");
+      changedItem = ITEM_RIGHT;
+      document.querySelector("#item-active").innerHTML = ITEM_RIGHT.innerHTML;
+    }
+
     
 
-      changedItem.innerHTML = "";
-      for (let i = 0; i < 3; i++) {
-        const card = createCardTemplate();
-        let ARRAY_IMAGES = [[1,2,3,4,5,6],
-                        [7,8,9,10,11,12],
-                        [13,14,15,16,17,18]];
-    let arr = ARRAY_IMAGES[0].map(value => ({ value, sort: Math.random() * 1}))
-.sort((b, a) => a.sort - b.sort)
-.map(({ value }) => value);
-let arr2 = ARRAY_IMAGES[2].map(value => ({ value, sort: Math.random() * 10 }))
-.sort((b, a) => a.sort - b.sort)
-.map(({ value }) => value);
-console.log(arr);   
-console.log(arr2);    
-        card.innerHTML = `
+    changedItem.innerHTML = "";
+    for (let i = 0; i < 3; i++) {
+      const card = createCardTemplate();
+      card.innerHTML = `
         <a class="slider__item-link" href="#">
-                        <img class="slider__item-image" src="images/pets-slider/pet-${arr[0]}.png" alt="image">
+                        <img class="slider__item-image" src="images/pets-slider/pet-${evenNumbers[i]}.png" alt="image">
                         <div class="slider__description-wrap">
                           <div class="slider__description">
                             <div class="slider__title">Cheetahs</div>
@@ -85,7 +93,7 @@ console.log(arr2);
                         </div>
                       </a>
                       <a class="slider__item-link" href="#">
-                        <img class="slider__item-image" src="images/pets-slider/pet-${arr2[i]}.png" alt="image">
+                        <img class="slider__item-image" src="images/pets-slider/pet-${oddNumbers[i]}.png" alt="image">
                         <div class="slider__description-wrap">
                           <div class="slider__description">
                             <div class="slider__title">Cheetahs</div>
@@ -95,18 +103,18 @@ console.log(arr2);
                         </div>
                       </a>
         `;
-        changedItem.appendChild(card);
-      }
+      changedItem.appendChild(card);
+    }
 
 
-      
 
-      BTNS.addEventListener('click', () =>{
 
-      });
-      BTN_LEFT.addEventListener("click", moveLeft);
-      BTN_RIGHT.addEventListener("click", moveRight);
-    })
-    
+
+
+
+    BTN_LEFT.addEventListener("click", moveLeft);
+    BTN_RIGHT.addEventListener("click", moveRight);
+  })
+
 
 });
